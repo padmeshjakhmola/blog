@@ -12,7 +12,7 @@ const BlogCard = () => {
           className="max-w-[350px] min-h-[400px] flex flex-col cursor-pointer transition-all hover:scale-105 bg-white shadow-md rounded-xl p-4"
         >
           <Image
-            src="/assets/images/person_reading.jpg"
+            src={data.photo_id ? data.photo_id : "/assets/images/person_reading.jpg"}
             alt="blog_image"
             width={400}
             height={200}
