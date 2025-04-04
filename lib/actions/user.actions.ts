@@ -93,3 +93,20 @@ export const signInUser = async ({
     };
   }
 };
+
+export const getCurrentUser = async () => {
+  const cookieStore = cookies();
+
+  const token = (await cookieStore).get("token")?.value;
+
+  if (!token) return null;
+
+  try {
+    const decoded = jwt.verify(token, config.env.jwtToken) as { id: string };
+
+    const user = await db.select().from(users).where(eq(users.id, decoded.id));
+    return user[0] || null;
+  } catch {
+    return null;
+  }
+};
