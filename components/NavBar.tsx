@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { getCurrentUser } from "@/lib/actions/user.actions";
+import { getCurrentUser, logout } from "@/lib/actions/user.actions";
 
 const NavBar = async () => {
   const user = await getCurrentUser();
@@ -20,19 +20,42 @@ const NavBar = async () => {
       </Link>
 
       <div className="flex flex-row justify-center items-center space-x-14 font-semibold">
-        <p className="hover:underline cursor-pointer">Home</p>
-        <p className="hover:underline cursor-pointer">Products</p>
-        <p className="hover:underline cursor-pointer">About</p>
+        {["Home", "Products", "About"].map((item) => (
+          <p key={item} className="hover:underline cursor-pointer">
+            {item}
+          </p>
+        ))}
 
-        <Link href="/sign-in">
+        {/* <Link href="/sign-in">
           <Button
             variant="secondary"
             className="bg-brand hover:bg-brand-dark/20 text-brand-dark font-bold hover:underline cursor-pointer"
             size="lg"
           >
-            {user ? "Logout" : " Sign In"}
+            {user ? "Logout" : "Sign In"}
           </Button>
-        </Link>
+        </Link> */}
+
+        {user ? (
+          <form action={logout}>
+            <Button
+              type="submit"
+              variant="secondary"
+              className="bg-red-50 hover:bg-red-100 text-red-500 font-bold hover:underline cursor-pointer"
+            >
+              Logout
+            </Button>
+          </form>
+        ) : (
+          <Link href="/sign-in">
+            <Button
+              variant="secondary"
+              className="bg-brand hover:bg-brand-dark/20 text-brand-dark font-bold hover:underline cursor-pointer"
+            >
+              Sign In
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

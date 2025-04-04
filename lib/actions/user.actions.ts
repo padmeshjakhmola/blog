@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import config from "../config";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 interface UserPayload {
   id: string;
@@ -109,4 +110,15 @@ export const getCurrentUser = async () => {
   } catch {
     return null;
   }
+};
+
+export const logout = async () => {
+  const cookieStore = cookies();
+  (await cookieStore).set("token", "", {
+    httpOnly: true,
+    path: "/",
+    expires: new Date(0),
+  });
+
+  redirect("/");
 };
