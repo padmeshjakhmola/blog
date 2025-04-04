@@ -22,13 +22,13 @@ const BlogCard = () => {
           <div className="flex flex-col flex-grow py-2">
             <div className="flex justify-between items-center">
               <h1 className="font-semibold text-lg">{data.name}</h1>
-              <Image
+              {/* <Image
                 src="/assets/icons/link.svg"
                 alt="blog_image"
                 width={20}
                 height={20}
                 className="h-auto"
-              />
+              /> */}
             </div>
 
             <p className="text-sm text-gray-600 overflow-hidden text-ellipsis line-clamp-3">
@@ -36,15 +36,27 @@ const BlogCard = () => {
             </p>
           </div>
 
-          <div className="flex items-center pt-2">
-            <Avatar className="size-6 mr-2">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <div className="text-xs font-bold flex items-center">
-              <p>{data.author}</p>
-              <span className="px-1">·</span>
-              <p>{data.date}</p>
+          <div className="flex items-center pt-2 justify-between">
+            <div className="flex flex-row">
+              <Avatar className="size-6 mr-2">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div className="text-xs font-bold flex items-center">
+                <p>{data.author}</p>
+                <span className="px-1">·</span>
+                <p>{data.date}</p>
+              </div>
+            </div>
+
+            <div>
+              <Image
+                src="/assets/icons/link.svg"
+                alt="blog_image"
+                width={15}
+                height={15}
+                className="h-auto"
+              />
             </div>
           </div>
         </div>
