@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
+import { createAccount, signInUser } from "@/lib/actions/user.actions";
+import { useRouter } from "next/navigation";
 // import { createAccount, signInUser } from "@/lib/actions/user.actions";
 
 type FormType = "sign-in" | "sign-up";
@@ -27,10 +29,12 @@ const authFormSchema = (formType: FormType) => {
       formType === "sign-up"
         ? z.string().min(2).max(50)
         : z.string().optional(),
+    password: z.string().min(2).max(50),
   });
 };
 
 const AuthForm = ({ type }: { type: FormType }) => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -41,6 +45,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     defaultValues: {
       fullName: "",
       email: "",
+      password: "",
     },
   });
 
@@ -52,21 +57,25 @@ const AuthForm = ({ type }: { type: FormType }) => {
     try {
       const user =
         type === "sign-up"
-          ? //    await createAccount({
-            //       fullName: values.fullName || "",
-            //       email: values.email,
-            //     })
-            console.log("sign-in")
-          : //   await signInUser({ email: values.email });
-            console.log("sign-up");
+          ? await createAccount({
+              fullName: values.fullName || "",
+              email: values.email,
+              password: values.password,
+            })
+          : await signInUser({
+              email: values.email,
+              password: values.password,
+            });
 
-      //   if (user.error === "User not found") {
-      //     return setErrorMessage("User not found. Sign up?");
-      //   }
+      if (user && typeof user !== "string" && "error" in user) {
+        return setErrorMessage(user.error);
+      }
 
-      //   setAccountId(user.accountId);
-      console.log(user);
-      console.log(values);
+      if (user?.status === 200) {
+        router.push("/");
+      }
+
+      console.log("user:", user);
     } catch {
       setErrorMessage("Failed to create account. Please try again");
     } finally {
@@ -91,7 +100,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
               render={({ field }) => (
                 <FormItem>
                   <div className="flex h-[78px] flex-col justify-center rounded-xl border border-light-300 px-4 shadow-lg">
-                    <FormLabel className="text-text-gray-800 pt-2 body-2 w-full">Full Name</FormLabel>
+                    <FormLabel className="text-text-gray-800 pt-2 body-2 w-full">
+                      Full Name
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter your full name"
@@ -112,7 +123,9 @@ const AuthForm = ({ type }: { type: FormType }) => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex h-[78px] flex-col justify-center rounded-xl border border-light-300 px-4 shadow-lg">
-                  <FormLabel className="text-text-gray-800 pt-2 body-2 w-full">Email</FormLabel>
+                  <FormLabel className="text-text-gray-800 pt-2 body-2 w-full">
+                    Email
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Enter your email"
@@ -122,6 +135,29 @@ const AuthForm = ({ type }: { type: FormType }) => {
                   </FormControl>
                 </div>
                 <FormMessage className="text-red-400 body-2 ml-4" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex h-[78px] flex-col justify-center rounded-xl border border-light-300 px-4 shadow-lg">
+                  <FormLabel className="text-text-gray-800 pt-2 body-2 w-full">
+                    Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Sssssshhhhh!!"
+                      className="border-none shadow-none p-0 shad-no-focus placeholder:text-gray-500 body-2"
+                      {...field}
+                    />
+                  </FormControl>
+                </div>
+                <FormMessage className="text-red body-2 ml-4" />
               </FormItem>
             )}
           />
@@ -142,7 +178,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
               />
             )}
           </Button>
-          {errorMessage && <p className="body-2 mx-auto w-fit rounded-xl bg-error/5 px-8 py-4 text-center text-red-500">*{errorMessage}</p>}
+          {errorMessage && (
+            <p className="body-2 mx-auto w-fit rounded-xl bg-error/5 px-8 py-4 text-center text-red-500">
+              *{errorMessage}
+            </p>
+          )}
           <div className="body-2 flex justify-center">
             <p className="text-gray-800">
               {type === "sign-in"

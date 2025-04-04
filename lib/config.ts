@@ -5,6 +5,7 @@ const config = {
     // awsAccessKey: process.env.AWS_ACCESS_KEY_ID!,
     // awsRegion: process.env.AWS_REGION!,
     databaseUrl: process.env.DATABASE_URL!,
+    jwtToken: process.env.JWT_SECRET!,
     // awsCloudfront: process.env.NEXT_PUBLIC_AWS_CLOUDFRONT!,
   },
 };
