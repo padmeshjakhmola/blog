@@ -169,3 +169,22 @@
     @apply bg-background text-foreground;
   }
 }
+
+.animated-red-gradient {
+  background: linear-gradient(270deg, #f43f5e, #ef4444, #b91c1c);
+  background-size: 600% 600%;
+  animation: redGradientShift 6s ease infinite;
+}
+
+@keyframes redGradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
