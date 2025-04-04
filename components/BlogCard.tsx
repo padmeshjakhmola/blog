@@ -1,18 +1,31 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import blogPosts from "../lib/dummydata";
+import { useRouter } from "next/navigation";
 
-const BlogCard = () => {
+interface Blog {
+  id: string;
+  blogName: string;
+  author: string;
+  blogDescription: string;
+  blogImage: string;
+  createdAt: string;
+}
+
+const BlogCard = ({ data }: { data: Blog[] }) => {
+  const router = useRouter();
   return (
     <div className="grid grid-cols-4 gap-8">
-      {blogPosts.map((data) => (
+      {data.map((blog) => (
         <div
-          key={data.id}
+          key={blog.id}
           className="max-w-[350px] min-h-[400px] flex flex-col cursor-pointer transition-all hover:scale-105 bg-white shadow-md rounded-xl p-4"
+          onClick={() => router.push(`/blog/${blog.id}`)}
         >
           <Image
-            src={data.photo_id ? data.photo_id : "/assets/images/person_reading.jpg"}
+            src={blog.blogImage || "/assets/images/person_reading.jpg"}
             alt="blog_image"
             width={400}
             height={200}
@@ -21,31 +34,24 @@ const BlogCard = () => {
 
           <div className="flex flex-col flex-grow py-2">
             <div className="flex justify-between items-center">
-              <h1 className="font-semibold text-lg">{data.name}</h1>
-              {/* <Image
-                src="/assets/icons/link.svg"
-                alt="blog_image"
-                width={20}
-                height={20}
-                className="h-auto"
-              /> */}
+              <h1 className="font-semibold text-lg">{blog.blogName}</h1>
             </div>
 
             <p className="text-sm text-gray-600 overflow-hidden text-ellipsis line-clamp-3">
-              {data.description}
+              {blog.blogDescription}
             </p>
           </div>
 
           <div className="flex items-center pt-2 justify-between">
             <div className="flex flex-row">
               <Avatar className="size-6 mr-2">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarImage src={blog.blogImage} />
+                <AvatarFallback>{blog.author.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="text-xs font-bold flex items-center">
-                <p>{data.author}</p>
+                <p>{blog.author}</p>
                 <span className="px-1">·</span>
-                <p>{data.date}</p>
+                <p>{blog.createdAt}</p>
               </div>
             </div>
 

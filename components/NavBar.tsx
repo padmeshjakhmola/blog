@@ -20,6 +20,7 @@ const NavBar = () => {
         <Button
           variant="secondary"
           className="bg-brand hover:bg-brand-dark/20 text-brand-dark font-bold hover:underline cursor-pointer"
+          size="lg"
         >
           Get Started
         </Button>

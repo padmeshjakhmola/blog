@@ -1,8 +1,25 @@
 import BlogCard from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
+import { db } from "@/database/drizzle";
+import { blogs } from "@/database/schema";
 import Image from "next/image";
 
-export default function Home() {
+const defaultAvatarImage = "https://github.com/shadcn.png";
+
+export default async function Home() {
+  const allBlogs = await db.select().from(blogs);
+
+  const data = allBlogs.map((blog) => ({
+    id: blog.id,
+    blogName: blog.blogName || "N/A",
+    author: blog.author || "Unknown",
+    blogDescription: blog.blogDescription || "No description available",
+    blogImage: blog.blogImage ? blog.blogImage : defaultAvatarImage,
+    createdAt: blog.createdAt
+      ? new Date(blog.createdAt).toLocaleDateString()
+      : "N/A",
+  }));
+
   return (
     <main className="p-10">
       <div className="py-10 space-y-2">
@@ -57,7 +74,7 @@ export default function Home() {
       </div>
 
       <div className="py-8">
-        <BlogCard />
+        <BlogCard data={data} />
       </div>
     </main>
   );
