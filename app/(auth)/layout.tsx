@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -6,13 +7,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex min-h-screen">
       <section className="hidden w-1/2 items-center justify-center bg-brand p-10 lg:flex xl:w-2/5">
         <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-12">
-          <Image
-            src="/assets/images/logo.png"
-            alt="logo"
-            width={80}
-            height={80}
-            className="h-auto transition-all hover:scale-105"
-          />
+          <Link href="/">
+            <Image
+              src="/assets/images/logo.png"
+              alt="logo"
+              width={80}
+              height={80}
+              className="h-auto transition-all hover:scale-105"
+            />
+          </Link>
           <div className="space-y-5 text-black">
             <h1 className="h2">Express, Explore, Engage</h1>
             <p className="h-3">

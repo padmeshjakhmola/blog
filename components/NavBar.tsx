@@ -21,13 +21,15 @@ const NavBar = () => {
         <p className="hover:underline cursor-pointer">Products</p>
         <p className="hover:underline cursor-pointer">About</p>
 
-        <Button
-          variant="secondary"
-          className="bg-brand hover:bg-brand-dark/20 text-brand-dark font-bold hover:underline cursor-pointer"
-          size="lg"
-        >
-          Get Started
-        </Button>
+        <Link href="/sign-in">
+          <Button
+            variant="secondary"
+            className="bg-brand hover:bg-brand-dark/20 text-brand-dark font-bold hover:underline cursor-pointer"
+            size="lg"
+          >
+            Sign In
+          </Button>
+        </Link>
       </div>
     </div>
   );
