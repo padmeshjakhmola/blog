@@ -7,10 +7,10 @@ import { useRouter } from "next/navigation";
 
 interface Blog {
   id: string;
-  blogName: string;
+  name: string;
   author: string;
-  blogDescription: string;
-  blogImage: string;
+  description: string;
+  imageUrl: string;
   createdAt: string;
 }
 
@@ -21,11 +21,11 @@ const BlogCard = ({ data }: { data: Blog[] }) => {
       {data.map((blog) => (
         <div
           key={blog.id}
-          className="max-w-[350px] min-h-[400px] flex flex-col cursor-pointer transition-all hover:scale-105 bg-white shadow-md rounded-xl p-4"
+          className="w-[350px] min-h-[400px] flex flex-col cursor-pointer transition-all hover:scale-105 bg-white shadow-md rounded-xl p-4"
           onClick={() => router.push(`/blog/${blog.id}`)}
         >
           <Image
-            src={blog.blogImage || "/assets/images/person_reading.jpg"}
+            src={blog.imageUrl || "/assets/images/person_reading.jpg"}
             alt="blog_image"
             width={400}
             height={200}
@@ -34,18 +34,18 @@ const BlogCard = ({ data }: { data: Blog[] }) => {
 
           <div className="flex flex-col flex-grow py-2">
             <div className="flex justify-between items-center">
-              <h1 className="font-semibold text-lg">{blog.blogName}</h1>
+              <h1 className="font-semibold text-lg">{blog.name}</h1>
             </div>
 
             <p className="text-sm text-gray-600 overflow-hidden text-ellipsis line-clamp-3">
-              {blog.blogDescription}
+              {blog.description}
             </p>
           </div>
 
           <div className="flex items-center pt-2 justify-between">
             <div className="flex flex-row">
               <Avatar className="size-6 mr-2">
-                <AvatarImage src={blog.blogImage} />
+                <AvatarImage src={blog.imageUrl} />
                 <AvatarFallback>{blog.author.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="text-xs font-bold flex items-center">

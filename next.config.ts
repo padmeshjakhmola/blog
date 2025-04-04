@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "my-aws-blog-bucket-123.s3.ap-south-1.amazonaws.com",
+      },
     ],
   },
 };

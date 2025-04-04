@@ -1,24 +1,30 @@
+"use client";
+
 import BlogCard from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
-import { db } from "@/database/drizzle";
-import { blogs } from "@/database/schema";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const defaultAvatarImage = "https://github.com/shadcn.png";
+export default function Home() {
+  const [blogs, setBlogs] = useState([]);
 
-export default async function Home() {
-  const allBlogs = await db.select().from(blogs);
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        const response = await fetch("/api/geturl");
+        if (!response.ok) throw new Error("Unable to fetch movies for DB");
 
-  const data = allBlogs.map((blog) => ({
-    id: blog.id,
-    blogName: blog.blogName || "N/A",
-    author: blog.author || "Unknown",
-    blogDescription: blog.blogDescription || "No description available",
-    blogImage: blog.blogImage ? blog.blogImage : defaultAvatarImage,
-    createdAt: blog.createdAt
-      ? new Date(blog.createdAt).toLocaleDateString()
-      : "N/A",
-  }));
+        const data = await response.json();
+
+        setBlogs(data);
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
+    }
+
+    fetchMovies();
+  }, []);
 
   return (
     <main className="p-10">
@@ -74,19 +80,22 @@ export default async function Home() {
       </div>
 
       <div className="py-8">
-        <BlogCard data={data} />
-      </div>
+        {/* <BlogCard data={data} /> */}
 
-      <div className="fixed bottom-4 right-4 flex flex-row justify-center items-center space-x-2 text-white shadow-xl p-3 rounded-full cursor-pointer transition-transform duration-300 hover:scale-105 animated-red-gradient hover:shadow-red-500/50 hover:shadow-lg">
-      <Image
-          src="/assets/icons/add.svg"
-          alt="add"
-          width={40}
-          height={40}
-          className="object-fill filter invert"
-          />
-        <h1>Add Blog?</h1>
+        {blogs.length > 0 && <BlogCard data={blogs} />}
       </div>
+      <Link href="/create">
+        <div className="fixed bottom-4 right-4 flex flex-row justify-center items-center space-x-2 text-white shadow-xl p-3 rounded-full cursor-pointer transition-transform duration-300 hover:scale-105 animated-red-gradient hover:shadow-red-500/50 hover:shadow-lg">
+          <Image
+            src="/assets/icons/add.svg"
+            alt="add"
+            width={40}
+            height={40}
+            className="object-fill filter invert"
+          />
+          <h1>Add Blog?</h1>
+        </div>
+      </Link>
     </main>
   );
 }
