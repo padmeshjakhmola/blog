@@ -13,12 +13,7 @@ export default function Home() {
           View all posts
         </Button>
       </div>
-      <div className="py-8 grid grid-cols-4 gap-8">
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
+      <div className="py-8">
         <BlogCard />
       </div>
     </main>
