@@ -22,6 +22,7 @@ export async function GET() {
         author: blog.author,
         name: blog.blogName,
         description: blog.blogDescription,
+        createdAt: blog.createdAt
       };
     })
   );

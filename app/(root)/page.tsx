@@ -10,7 +10,7 @@ export default function Home() {
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    async function fetchMovies() {
+    async function fetchBlogs() {
       try {
         const response = await fetch("/api/geturl");
         if (!response.ok) throw new Error("Unable to fetch movies for DB");
@@ -23,7 +23,7 @@ export default function Home() {
       }
     }
 
-    fetchMovies();
+    fetchBlogs();
   }, []);
 
   return (

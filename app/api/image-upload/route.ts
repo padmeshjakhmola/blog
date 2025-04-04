@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 
     try {
       await db.insert(blogs).values({
-        author: name,
+        // author: name,
         blogName: name,
         blogDescription: description,
         blogImage: uniqueFileNameforfetchingImage,
