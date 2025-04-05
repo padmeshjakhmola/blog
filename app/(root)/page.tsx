@@ -109,7 +109,7 @@ export default function Home() {
         {blogs.length > 0 && <BlogCard data={blogs} />}
       </div>
       <Link href="/create">
-        <div className="fixed bottom-4 right-4 flex flex-row justify-center items-center space-x-2 text-white shadow-xl p-3 rounded-full cursor-pointer transition-transform duration-300 hover:scale-105 animated-red-gradient hover:shadow-red-500/50 hover:shadow-lg">
+        <div className="fixed bottom-4 right-4 flex flex-row justify-center items-center space-x-2 text-white shadow-xl p-3 rounded-full cursor-pointer transition-transform duration-300 hover:scale-105 animated-red-gradient hover:shadow-red-500/50 hover:shadow-lg px-4">
           <Image
             src="/assets/icons/add.svg"
             alt="add"

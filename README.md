@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✨ Modern Blog Platform
 
-## Getting Started
+Live Site: [https://blog-two-ebon-94.vercel.app](https://blog-two-ebon-94.vercel.app)
 
-First, run the development server:
+A full-stack modern blog application built with **Next.js 14**, **Tailwind CSS**, **Drizzle ORM**, **Neon Postgres**, and **AWS S3** for image storage. This project features full CRUD functionality including blog creation, listing, and deletion, with seamless UI and smooth developer experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- 📝 **Create Blog** – Add rich blog content with title, description, and an optional image.
+- 📖 **Read Blog** – List of all blogs with clean layout.
+- 🗑️ **Delete Blog** – Remove blogs instantly from UI and database.
+- 🧰 **Built-in API** – Server-side Next.js API routes for managing blogs.
+- ☁️ **AWS S3 Integration** – Upload and store blog images securely.
+- 🧩 **PostgreSQL with Neon** – Scalable, cloud-based Postgres database.
+- 🔧 **Drizzle ORM** – Type-safe, lightweight ORM for fast DB operations.
+- 💅 **Tailwind CSS** – Utility-first responsive and modern styling.
+- 🔐 **Authentication ready** (optional if added or coming soon).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+| Technology      | Description                      |
+| --------------- | -------------------------------- |
+| **Next.js**     | Full-stack React framework       |
+| **TailwindCSS** | Utility-first CSS framework      |
+| **Drizzle ORM** | Type-safe SQL ORM                |
+| **Neon DB**     | Serverless Postgres (Cloud)      |
+| **AWS S3**      | File/Image storage               |
+| **Vercel**      | Deployment platform for frontend |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Project Structure
 
-## Deploy on Vercel
+## 📁 app ┣ 📁 api ← API routes for server-side logic (CRUD) ┣ 📁 components ← Reusable UI components ┣ 📁 lib ← Database config, actions ┣ 📁 public ← Static assets like icons and logos ┣ 📁 styles ← Global styles if any ┣ 📄 (root)/page.tsx ← Homepage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔧 Installation & Setup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clone the repo:**
+
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+
+   ```
+
+2. **Install dependencies:**
+   npm install
+
+3. **Add environment variables:**
+   Create a .env.local file and add the following:
+
+   DATABASE_URL=your_neon_database_url
+   AWS_ACCESS_KEY_ID=your_aws_access_key
+   AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+   AWS_REGION=your_aws_region
+   AWS_S3_BUCKET_NAME=your_bucket_name
+   NEXT_PUBLIC_S3_BASE_URL=https://your-bucket.s3.amazonaws.com/
+
+4. **Run Locally**
+   npm run dev
+
+## 🧠 Learnings
+
+- Leveraged **Drizzle ORM** for an enjoyable schema-first approach.
+- Hands-on with file upload to **AWS S3** and handling signed URLs.
+- Improved understanding of **serverless functions** and **Next.js API routes**.
+- Focused on clean, component-driven UI using **TailwindCSS**.
+
+---
+
+## 🤝 Contributions
+
+Pull requests are welcome!  
+Feel free to open an issue or submit a PR for improvements, fixes, or enhancements.
+
+---
+
+## 📬 Contact
+
+Made with ❤️ by **Padmesh Jakhmola**
