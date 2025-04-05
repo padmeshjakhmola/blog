@@ -1,12 +1,13 @@
 import BlogForm from "@/components/BlogForm";
 import { getCurrentUser } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const Page = async () => {
   const user = await getCurrentUser();
 
   if (!user) {
-    return new Error("User not logged in");
+    redirect("/sign-in");
   }
 
   return (

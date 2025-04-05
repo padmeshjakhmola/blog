@@ -1,0 +1,1 @@
+ALTER TABLE "blogs" ALTER COLUMN "blog_description" SET DATA TYPE varchar(5000);

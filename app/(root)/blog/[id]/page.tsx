@@ -1,7 +1,7 @@
 import React from "react";
 import Blog from "@/components/Blog";
 import { db } from "@/database/drizzle";
-import { blogs } from "@/database/schema";
+import { blogs, users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { signedUrl } from "@/lib/actions/sign";
@@ -11,8 +11,16 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
 
   const [blogDetails] = await db
-    .select()
+    .select({
+      blogName: blogs.blogName,
+      blogDescription: blogs.blogDescription,
+      blogImage: blogs.blogImage,
+      createdAt: blogs.createdAt,
+      authorId: blogs.author,
+      authorName: users.fullName,
+    })
     .from(blogs)
+    .leftJoin(users, eq(blogs.author, users.id))
     .where(eq(blogs.id, id))
     .limit(1);
 
@@ -28,7 +36,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const formattedBlogDetails = {
     // ...blogDetails,
     blogName: blogDetails.blogName ?? "Untitled Blog",
-    author: blogDetails.author ?? "Anonymous",
+    author: blogDetails.authorName ?? "Anonymous", // <- updated
     blogDescription: blogDetails.blogDescription ?? "No description available.",
     createdAt: blogDetails.createdAt
       ? new Date(blogDetails.createdAt).toLocaleDateString()

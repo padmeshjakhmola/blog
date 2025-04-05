@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -36,7 +37,6 @@ const BlogForm = ({ author }: { author: string }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-
     const formData = new FormData();
     formData.append("author", author);
     formData.append("name", values.name);
@@ -91,7 +91,11 @@ const BlogForm = ({ author }: { author: string }) => {
               <FormItem>
                 <FormLabel>Blog Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your Blog Description" {...field} />
+                  {/* <Input placeholder="Enter your Blog Description"  /> */}
+                  <Textarea
+                    {...field}
+                    placeholder="Enter your Blog Description"
+                  />
                 </FormControl>
               </FormItem>
             )}

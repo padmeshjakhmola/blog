@@ -6,7 +6,7 @@ export const blogs = pgTable("blogs", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   blogName: varchar("blog_name", { length: 255 }).default("Blog"),
-  blogDescription: varchar("blog_description", { length: 255 }).default(
+  blogDescription: varchar("blog_description", { length: 5000 }).default(
     "Description"
   ),
   blogImage: varchar("blog_image", { length: 255 }).notNull(),
