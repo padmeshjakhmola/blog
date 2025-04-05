@@ -23,7 +23,7 @@ const formSchema = z.object({
   image: z.instanceof(File, { message: "Image file is required" }),
 });
 
-const BlogForm: React.FC = () => {
+const BlogForm = ({ author }: { author: string }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,6 +39,7 @@ const BlogForm: React.FC = () => {
     console.log(values);
 
     const formData = new FormData();
+    formData.append("author", author);
     formData.append("name", values.name);
     formData.append("description", values.description);
     formData.append("image", values.image);

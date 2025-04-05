@@ -28,7 +28,7 @@ const BlogCard = ({ data }: { data: Blog[] }) => {
         return (
           <div
             key={blog.id}
-            className="w-[350px] min-h-[400px] flex flex-col cursor-pointer transition-all hover:scale-105 bg-white shadow-md rounded-xl p-4"
+            className="w-full max-w-[350px] min-h-[400px] flex flex-col cursor-pointer transition-all hover:scale-105 bg-white shadow-md rounded-xl p-4"
             onClick={() => router.push(`/blog/${blog.id}`)}
           >
             <Image

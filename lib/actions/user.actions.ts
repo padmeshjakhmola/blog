@@ -106,7 +106,13 @@ export const getCurrentUser = async () => {
     const decoded = jwt.verify(token, config.env.jwtToken) as { id: string };
 
     const user = await db.select().from(users).where(eq(users.id, decoded.id));
-    return user[0] || null;
+    // return user[0] || null;
+
+    if (user.length > 0) {
+      const { id, fullName, email } = user[0];
+      return { id, name: fullName, email };
+    }
+    return null;
   } catch {
     return null;
   }

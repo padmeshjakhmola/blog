@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
 
     const name = formData.get("name") as string | null;
+    const author = formData.get("author") as string | null;
     const description = formData.get("description") as string | null;
     const image = formData.get("image") as File | null;
 
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     try {
       await db.insert(blogs).values({
-        // author: name,
+        author: author,
         blogName: name,
         blogDescription: description,
         blogImage: uniqueFileNameforfetchingImage,
