@@ -30,6 +30,10 @@ const authFormSchema = (formType: FormType) => {
         ? z.string().min(2).max(50)
         : z.string().optional(),
     password: z.string().min(2).max(50),
+    image:
+      formType === "sign-up"
+        ? z.instanceof(File, { message: "Image file is required" }).nullable()
+        : z.any().optional(),
   });
 };
 
@@ -46,6 +50,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
       fullName: "",
       email: "",
       password: "",
+      image: null,
     },
   });
 
@@ -61,6 +66,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               fullName: values.fullName || "",
               email: values.email,
               password: values.password,
+              image: values.image ?? null,
             })
           : await signInUser({
               email: values.email,
@@ -161,6 +167,36 @@ const AuthForm = ({ type }: { type: FormType }) => {
               </FormItem>
             )}
           />
+
+          {type === "sign-up" && (
+            <FormField
+              control={form.control}
+              name="image"
+              render={() => (
+                <FormItem>
+                  <div className="flex h-[78px] flex-col justify-center rounded-xl border border-light-300 px-4 shadow-lg">
+                    <FormLabel className="text-text-gray-800 py-2 body-2 w-full">
+                      Upload Profile Image
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        className="border-none shadow-none p-0 shad-no-focus placeholder:text-gray-500 body-2"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            form.setValue("image", file);
+                          }
+                        }}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage className="text-red body-2 ml-4" />
+                </FormItem>
+              )}
+            />
+          )}
 
           <Button
             type="submit"

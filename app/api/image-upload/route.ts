@@ -2,14 +2,11 @@ import config from "@/lib/config";
 import s3 from "@/utils/aws";
 import { PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
 import { db } from "@/database/drizzle";
 import { blogs } from "@/database/schema";
+import { uniqueFileName } from "@/constants";
 
 export async function POST(req: NextRequest) {
-  const uniqueFileName = (bytes = 32) =>
-    crypto.randomBytes(bytes).toString("hex");
-
   try {
     const formData = await req.formData();
 

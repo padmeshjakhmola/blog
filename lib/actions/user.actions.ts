@@ -8,6 +8,9 @@ import config from "../config";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { uniqueFileName } from "@/constants";
+import { PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
+import s3 from "@/utils/aws";
 
 interface UserPayload {
   id: string;
@@ -22,11 +25,40 @@ export const createAccount = async ({
   fullName,
   email,
   password,
+  image,
 }: {
   fullName: string;
   email: string;
   password: string;
+  image: File | null;
 }) => {
+
+  if (!image) {
+    return {
+      status: 400,
+      message: "Imaage required",
+    };
+  }
+
+  const imageBuffer = image
+    ? Buffer.from(await image.arrayBuffer())
+    : undefined;
+
+  const uniqueFileNameforfetchingImage = uniqueFileName();
+  const imageParams: AWSFILEUPLOAD = {
+    Bucket: config.env.awsBucketname,
+    Key: uniqueFileNameforfetchingImage,
+    Body: imageBuffer,
+    ContentType: image.type || "image/jpeg",
+    // ACL: "public-read",
+  };
+
+  const imageupload_command = new PutObjectCommand(
+    imageParams as PutObjectCommandInput
+  );
+
+  await Promise.all([s3.send(imageupload_command)]);
+
   const hashPassword = await bcrypt.hash(password, 10);
   const insertedUsers = await db
     .insert(users)
@@ -34,6 +66,7 @@ export const createAccount = async ({
       fullName,
       email,
       password: hashPassword,
+      profileImage: uniqueFileNameforfetchingImage
     })
     .returning({ id: users.id });
 
