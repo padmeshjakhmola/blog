@@ -35,7 +35,7 @@ A full-stack modern blog application built with **Next.js 14**, **Tailwind CSS**
 
 ## 📦 Project Structure
 
-## 📁 app ┣ 📁 api ← API routes for server-side logic (CRUD) ┣ 📁 components ← Reusable UI components ┣ 📁 lib ← Database config, actions ┣ 📁 public ← Static assets like icons and logos ┣ 📁 styles ← Global styles if any ┣ 📄 (root)/page.tsx ← Homepage
+<pre lang="markdown"> ``` 📁 app ┣ 📁 api ← API routes for server-side logic (CRUD) ┣ 📁 components ← Reusable UI components ┣ 📁 lib ← Database config, actions ┣ 📁 public ← Static assets like icons and logos ┣ 📁 styles ← Global styles if any ┣ 📄 (root)/page.tsx ← Homepage ``` </pre>
 
 ## 🔧 Installation & Setup
 
