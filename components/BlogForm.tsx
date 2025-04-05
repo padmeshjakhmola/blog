@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { Textarea } from "./ui/textarea";
 
 const formSchema = z.object({
-  name: z.string().min(2).max(50),
+  name: z.string().min(2).max(100),
   description: z.string().min(2),
   image: z.instanceof(File, { message: "Image file is required" }),
 });

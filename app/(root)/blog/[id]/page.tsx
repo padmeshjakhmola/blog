@@ -6,12 +6,18 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { signedUrl } from "@/lib/actions/sign";
 import config from "@/lib/config";
+import { getCurrentUser } from "@/lib/actions/user.actions";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const user = await getCurrentUser();
+
+  console.log("useruseruseruseruseruseruser:", user);
+
   const id = (await params).id;
 
   const [blogDetails] = await db
     .select({
+      id: blogs.id,
       blogName: blogs.blogName,
       blogDescription: blogs.blogDescription,
       blogImage: blogs.blogImage,
@@ -33,8 +39,13 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const signUrlImage = await signedUrl(getObjectParamsofImage);
 
+  if (!user?.id) return null;
+
   const formattedBlogDetails = {
     // ...blogDetails,
+    id,
+    authorId: blogDetails.authorId,
+    loggedInUser: user?.id,
     blogName: blogDetails.blogName ?? "Untitled Blog",
     author: blogDetails.authorName ?? "Anonymous",
     blogDescription: blogDetails.blogDescription ?? "No description available.",

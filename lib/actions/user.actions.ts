@@ -1,15 +1,19 @@
 "use server";
 
 import { db } from "@/database/drizzle";
-import { users } from "@/database/schema";
+import { blogs, users } from "@/database/schema";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { uniqueFileName } from "@/constants";
-import { PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  PutObjectCommandInput,
+} from "@aws-sdk/client-s3";
 import s3 from "@/utils/aws";
 import { signedUrl } from "./sign";
 
@@ -178,4 +182,35 @@ export const logout = async () => {
   });
 
   redirect("/");
+};
+
+export const deleteBlog = async (blogId: string, userId: string) => {
+  const blog = await db
+    .select()
+    .from(blogs)
+    .where(and(eq(blogs.id, blogId), eq(blogs.author, userId)))
+    .limit(1);
+
+  if (!blog[0]) {
+    return {
+      status: 404,
+      message: "You don't have permission to delete it.",
+    };
+  }
+
+  const blogToDelete = blog[0];
+
+  const deleteCommand = new DeleteObjectCommand({
+    Bucket: config.env.awsBucketname,
+    Key: blogToDelete.blogImage,
+  });
+
+  await s3.send(deleteCommand);
+
+  await db.delete(blogs).where(eq(blogs.id, blogId));
+
+  return {
+    status: 200,
+    message: "Blog deleted successfully",
+  };
 };
