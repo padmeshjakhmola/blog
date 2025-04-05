@@ -186,7 +186,16 @@ const AuthForm = ({ type }: { type: FormType }) => {
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           if (file) {
-                            form.setValue("image", file);
+                            if (file.size > 1024 * 1024) {
+                              form.setError("image", {
+                                type: "manual",
+                                message: "Image size should be less than 1MB",
+                              });
+                              form.setValue("image", null);
+                            } else {
+                              form.clearErrors("image");
+                              form.setValue("image", file);
+                            }
                           }
                         }}
                       />

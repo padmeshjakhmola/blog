@@ -18,8 +18,8 @@ interface Blog {
 const BlogCard = ({ data }: { data: Blog[] }) => {
   const router = useRouter();
   return (
-    <div className="grid grid-cols-4 gap-8">
-      {data.map((blog) => {
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+{data.map((blog) => {
         const formattedDate = new Intl.DateTimeFormat("en-GB", {
           day: "numeric",
           month: "long",

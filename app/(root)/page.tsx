@@ -57,7 +57,7 @@ export default function Home() {
       </div>
       {randomBlog && (
         <div
-          className="relative w-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px] overflow-hidden rounded-2xl transition-all hover:scale-102 cursor-pointer shadow-xl"
+          className="relative w-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px] overflow-hidden rounded-2xl transition-all hover:scale-102 cursor-pointer shadow-xl hidden sm:hidden md:block"
           onClick={() => router.push(`/blog/${randomBlog.id}`)}
         >
           {imageLoading && (
