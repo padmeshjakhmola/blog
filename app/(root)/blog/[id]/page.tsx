@@ -36,7 +36,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const formattedBlogDetails = {
     // ...blogDetails,
     blogName: blogDetails.blogName ?? "Untitled Blog",
-    author: blogDetails.authorName ?? "Anonymous", // <- updated
+    author: blogDetails.authorName ?? "Anonymous",
     blogDescription: blogDetails.blogDescription ?? "No description available.",
     createdAt: blogDetails.createdAt
       ? new Date(blogDetails.createdAt).toLocaleDateString()

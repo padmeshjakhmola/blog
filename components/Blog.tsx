@@ -41,6 +41,16 @@ const Blog = ({
 
         <p className="px-16 py-10">{blogDescription}</p>
       </div>
+      <div className="fixed bottom-4 right-4 flex flex-row justify-center items-center space-x-2 text-white shadow-xl p-4 pr-6 rounded-full cursor-pointer transition-transform duration-300 hover:scale-110 animated-red-gradient hover:shadow-red-500/50 hover:shadow-lg">
+        <Image
+          src="/assets/icons/delete.svg"
+          alt="add"
+          width={30}
+          height={30}
+          className="object-fill filter invert"
+        />
+        <h1 className="text-lg select-none">Delete</h1>
+      </div>
     </div>
   );
 };
