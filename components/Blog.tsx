@@ -23,7 +23,7 @@ interface BlogDetails {
   blogDescription: string;
   blogImage: string;
   authorId: string;
-  loggedInUser: string;
+  loggedInUser?: string;
   createdAt?: string;
 }
 

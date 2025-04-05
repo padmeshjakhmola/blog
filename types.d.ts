@@ -10,3 +10,13 @@ interface GetObjectParam {
   Bucket: string;
   Key: string;
 }
+
+type Blog = {
+  id: string;
+  authorId: string;
+  blogName: string;
+  author: string;
+  blogDescription: string;
+  createdAt: string;
+  blogImage: string;
+};

@@ -11,8 +11,6 @@ import { getCurrentUser } from "@/lib/actions/user.actions";
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const user = await getCurrentUser();
 
-  console.log("useruseruseruseruseruseruser:", user);
-
   const id = (await params).id;
 
   const [blogDetails] = await db
@@ -39,13 +37,13 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const signUrlImage = await signedUrl(getObjectParamsofImage);
 
-  if (!user?.id) return null;
+  const loggedInUser = user?.id ?? "";
 
   const formattedBlogDetails = {
     // ...blogDetails,
     id,
     authorId: blogDetails.authorId,
-    loggedInUser: user?.id,
+    loggedInUser: loggedInUser,
     blogName: blogDetails.blogName ?? "Untitled Blog",
     author: blogDetails.authorName ?? "Anonymous",
     blogDescription: blogDetails.blogDescription ?? "No description available.",

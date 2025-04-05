@@ -4,10 +4,15 @@ import BlogCard from "@/components/BlogCard";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  const [randomBlog, setRandomBlog] = useState<Blog | null>(null);
   const [blogs, setBlogs] = useState([]);
+  const [imageLoading, setImageLoading] = useState(true);
 
   useEffect(() => {
     async function fetchBlogs() {
@@ -23,7 +28,21 @@ export default function Home() {
       }
     }
 
+    async function fetchRandomBlog() {
+      try {
+        const response = await fetch("/api/blogs/getrandomblog");
+        if (!response.ok) throw new Error("Unable to fetch random blog");
+
+        const data = await response.json();
+
+        setRandomBlog(data);
+      } catch (error) {
+        console.error("Error fetching random blog:", error);
+      }
+    }
+
     fetchBlogs();
+    fetchRandomBlog();
   }, []);
 
   return (
@@ -36,38 +55,45 @@ export default function Home() {
           walks of life.
         </p>
       </div>
+      {randomBlog && (
+        <div
+          className="relative w-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px] overflow-hidden rounded-2xl transition-all hover:scale-102 cursor-pointer shadow-xl"
+          onClick={() => router.push(`/blog/${randomBlog.id}`)}
+        >
+          {imageLoading && (
+            <div className="absolute inset-0 bg-gray-300 animate-pulse z-10 rounded-2xl" />
+          )}
 
-      <div className="relative w-full max-h-[400px] md:max-h-[500px] lg:max-h-[600px] overflow-hidden rounded-2xl transition-all hover:scale-102 cursor-pointer shadow-xl">
-        <Image
-          src="/assets/images/person_reading.jpg"
-          alt="main_image"
-          width={1200}
-          height={600}
-          className="w-full h-auto object-cover"
-        />
+          <Image
+            src={randomBlog.blogImage}
+            alt="main_image"
+            width={1200}
+            height={600}
+            className="w-full h-auto object-cover"
+            onLoadingComplete={() => setImageLoading(false)}
+          />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-6 text-white ">
-          <h1 className="text-2xl md:text-4xl font-bold hover:underline">
-            Designing for Accessibility: A Guide
-          </h1>
-          <p className="text-sm md:text-lg mt-2 hover:underline">
-            A comprehensive guide to making web and app designs more accessible
-            for people with disabilities, ensuring inclusivity.,
-          </p>
+          <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-6 text-white ">
+            <h1 className="text-2xl md:text-4xl font-bold hover:underline">
+              {randomBlog.blogName}
+            </h1>
+            <p className="text-sm md:text-lg mt-2 hover:underline overflow-hidden line-clamp-2">
+              {randomBlog.blogDescription}
+            </p>
 
-          <div className="flex flex-row py-10 no-underline gap-16">
-            <div className="space-y-2">
-              <p className="text-sm">Written By</p>
-              <p>Prank Shadow</p>
-            </div>
-            <div className="space-y-2">
-              <p className="text-sm">Published On</p>
-              <p>10 April 2025</p>
+            <div className="flex flex-row py-10 no-underline gap-16">
+              <div className="space-y-2">
+                <p className="text-sm">Written By</p>
+                <p>{randomBlog.author}</p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm">Published On</p>
+                <p>{randomBlog.createdAt}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div className="top-heading-small flex flex-row justify-between items-center pt-10">
         <h1 className="font-bold text-lg">Featured Blog Post</h1>
@@ -80,8 +106,6 @@ export default function Home() {
       </div>
 
       <div className="py-8">
-        {/* <BlogCard data={data} /> */}
-
         {blogs.length > 0 && <BlogCard data={blogs} />}
       </div>
       <Link href="/create">
