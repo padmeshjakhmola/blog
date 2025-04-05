@@ -76,9 +76,9 @@ const BlogForm = ({ author }: { author: string }) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Blog Heading</FormLabel>
+                <FormLabel>Blog Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your Blog Heading" {...field} />
+                  <Input placeholder="Enter your Blog Title" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -89,9 +89,9 @@ const BlogForm = ({ author }: { author: string }) => {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Blog Content</FormLabel>
+                <FormLabel>Blog Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your Blog Content" {...field} />
+                  <Input placeholder="Enter your Blog Description" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -102,7 +102,7 @@ const BlogForm = ({ author }: { author: string }) => {
             name="image"
             render={() => (
               <FormItem>
-                <FormLabel>Image</FormLabel>
+                <FormLabel>Blog Image</FormLabel>
                 <FormControl>
                   <Input
                     type="file"
@@ -122,7 +122,7 @@ const BlogForm = ({ author }: { author: string }) => {
 
           <Button
             type="submit"
-            className="bg-brand-dark h-[66px] text-white hover:bg-brand-dark/80 cursor-pointer"
+            className="bg-brand-dark w-full text-white hover:bg-brand-dark/80 cursor-pointer"
             disabled={isLoading}
           >
             Submit
