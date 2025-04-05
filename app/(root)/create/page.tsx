@@ -5,9 +5,13 @@ import React from "react";
 const Page = async () => {
   const user = await getCurrentUser();
 
+  if (!user) {
+    return new Error("User not logged in");
+  }
+
   return (
     <div className="py-10 mx-96">
-      <BlogForm author={user?.name ?? "Unknown Author"} />
+      <BlogForm author={user?.id} />
     </div>
   );
 };

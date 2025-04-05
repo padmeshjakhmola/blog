@@ -2,7 +2,9 @@ import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 
 export const blogs = pgTable("blogs", {
   id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-  author: varchar("author", { length: 255 }).default("Author"),
+  author: uuid("author")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   blogName: varchar("blog_name", { length: 255 }).default("Blog"),
   blogDescription: varchar("blog_description", { length: 255 }).default(
     "Description"

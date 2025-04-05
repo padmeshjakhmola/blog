@@ -36,7 +36,6 @@ const BlogForm = ({ author }: { author: string }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
 
     const formData = new FormData();
     formData.append("author", author);
@@ -51,8 +50,8 @@ const BlogForm = ({ author }: { author: string }) => {
         body: formData,
       });
 
-      const result = await response.json();
-      console.log("Upload result:", result, result.status, response.status);
+      // const result = await response.json();
+      // console.log("Upload result:", result, result.status, response.status);
       if (response.status === 500) {
         return toast.error("Failed to Uploded");
       }

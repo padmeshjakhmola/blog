@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { uniqueFileName } from "@/constants";
 import { PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
 import s3 from "@/utils/aws";
+import { signedUrl } from "./sign";
 
 interface UserPayload {
   id: string;
@@ -32,7 +33,6 @@ export const createAccount = async ({
   password: string;
   image: File | null;
 }) => {
-
   if (!image) {
     return {
       status: 400,
@@ -66,7 +66,7 @@ export const createAccount = async ({
       fullName,
       email,
       password: hashPassword,
-      profileImage: uniqueFileNameforfetchingImage
+      profileImage: uniqueFileNameforfetchingImage,
     })
     .returning({ id: users.id });
 
@@ -78,11 +78,21 @@ export const createAccount = async ({
     id: user.id,
   });
 
-  if (token)
-    return {
-      status: 200,
-      message: "User logged in successfully",
-    };
+  if (!token) return null;
+
+  const cookieStore = cookies();
+  (await cookieStore).set("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+  });
+
+  return {
+    status: 200,
+    message: "User logged in successfully",
+  };
 };
 
 export const signInUser = async ({
@@ -142,8 +152,16 @@ export const getCurrentUser = async () => {
     // return user[0] || null;
 
     if (user.length > 0) {
-      const { id, fullName, email } = user[0];
-      return { id, name: fullName, email };
+      const { id, fullName, email, profileImage } = user[0];
+
+      const getObjectParamsofImage = {
+        Bucket: config.env.awsBucketname,
+        Key: profileImage,
+      };
+
+      const signUrlImage = await signedUrl(getObjectParamsofImage);
+
+      return { id, name: fullName, email, profileImage: signUrlImage };
     }
     return null;
   } catch {

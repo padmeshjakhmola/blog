@@ -3,11 +3,12 @@ import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { getCurrentUser, logout } from "@/lib/actions/user.actions";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const NavBar = async () => {
   const user = await getCurrentUser();
 
-  console.log("rrrrrrrrrrrrrrrrr",user)
+  // console.log("rrrrrrrrrrrrrrrrr", user);
 
   return (
     <div className="flex flex-row justify-between mx-10 mt-6 text-md">
@@ -39,7 +40,10 @@ const NavBar = async () => {
         </Link> */}
 
         {user ? (
-          <form action={logout}>
+          <form
+            action={logout}
+            className="flex flex-row justify-center items-center space-x-6"
+          >
             <Button
               type="submit"
               variant="secondary"
@@ -47,6 +51,11 @@ const NavBar = async () => {
             >
               Logout
             </Button>
+
+            <Avatar>
+              <AvatarImage src={user.profileImage} alt="@profileimage" />
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
           </form>
         ) : (
           <Link href="/sign-in">

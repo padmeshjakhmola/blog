@@ -11,6 +11,7 @@ interface Blog {
   author: string;
   description: string;
   imageUrl: string;
+  profileImage: string;
   createdAt: string;
 }
 
@@ -52,7 +53,7 @@ const BlogCard = ({ data }: { data: Blog[] }) => {
             <div className="flex items-center pt-2 justify-between">
               <div className="flex flex-row">
                 <Avatar className="size-6 mr-2">
-                  <AvatarImage src={blog.imageUrl} />
+                  <AvatarImage src={blog.profileImage} />
                   <AvatarFallback>{blog.author.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="text-xs font-bold flex items-center">

@@ -13,13 +13,13 @@ export default function Home() {
     async function fetchBlogs() {
       try {
         const response = await fetch("/api/geturl");
-        if (!response.ok) throw new Error("Unable to fetch movies for DB");
+        if (!response.ok) throw new Error("Unable to fetch blog for DB");
 
         const data = await response.json();
 
         setBlogs(data);
       } catch (error) {
-        console.error("Error fetching movies:", error);
+        console.error("Error fetching blog:", error);
       }
     }
 

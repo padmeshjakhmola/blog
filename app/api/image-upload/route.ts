@@ -10,6 +10,8 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
 
+    // console.log("formData:", formData, typeof formData);
+
     const name = formData.get("name") as string | null;
     const author = formData.get("author") as string | null;
     const description = formData.get("description") as string | null;
@@ -24,6 +26,17 @@ export async function POST(req: NextRequest) {
 
     if (!image) {
       return NextResponse.json({ error: "Image is required" }, { status: 400 });
+    }
+
+    if (
+      !author ||
+      typeof author !== "string" ||
+      !author.match(/^[0-9a-fA-F-]{36}$/)
+    ) {
+      return NextResponse.json(
+        { error: "Valid UUID author ID is required" },
+        { status: 400 }
+      );
     }
 
     const imageBuffer = image

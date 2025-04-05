@@ -81,7 +81,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
         router.push("/");
       }
 
-      console.log("user:", user);
+      // console.log("user:", user);
     } catch {
       setErrorMessage("Failed to create account. Please try again");
     } finally {
