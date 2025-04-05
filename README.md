@@ -28,7 +28,7 @@ A full-stack modern blog application built with **Next.js 14**, **Tailwind CSS**
 | **TailwindCSS** | Utility-first CSS framework      |
 | **Drizzle ORM** | Type-safe SQL ORM                |
 | **Neon DB**     | Serverless Postgres (Cloud)      |
-| **AWS S3**      | File/Image storage               |
+| **AWS S3**      | Image uploads using Signed URLs  |
 | **Vercel**      | Deployment platform for frontend |
 
 ---
