@@ -36,6 +36,13 @@
       "when": 1743832371044,
       "tag": "0004_secret_blob",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1744528810106,
+      "tag": "0005_curvy_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }

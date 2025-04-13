@@ -62,17 +62,6 @@ const BlogOptions = ({ id }: { id: string }) => {
     },
   ];
 
-  console.log(
-    "Sssssssssssssssssssssssss",
-    openDialog,
-    typeof openDialog,
-    !!openDialog
-  );
-
-  console.log(process.env.NODE_ENV);
-
-  console.log("Aaaaaaaaaaaaaaaaaaaa", showInput);
-
   return (
     <>
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center space-x-2 text-white bg-white shadow-top-bottom p-4 border rounded-full hover:shadow-red-500/50 hover:shadow-lg">

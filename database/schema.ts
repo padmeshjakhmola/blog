@@ -21,3 +21,15 @@ export const users = pgTable("users", {
   profileImage: varchar("profile_image", { length: 255 }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
+
+export const comments = pgTable("comments", {
+  id: uuid("id").defaultRandom().primaryKey().notNull(),
+  comment: varchar("comment", { length: 1000 }).notNull(),
+  blogId: uuid("blog_id")
+    .notNull()
+    .references(() => blogs.id, { onDelete: "cascade" }),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});

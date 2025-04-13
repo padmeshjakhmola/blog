@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import BlogOptions from "./BlogOptions";
+import Comments from "./Comments";
 
 interface BlogDetails {
   id?: string;
@@ -48,6 +49,12 @@ const Blog = ({
         <p className="px-16 py-10">{blogDescription}</p>
       </div>
       {authorId === loggedInUser && <BlogOptions id={id || ""} />}
+
+      <div className="border-1 mx-32 mb-10" />
+
+      <div className="px-16">
+        <Comments />
+      </div>
     </div>
   );
 };

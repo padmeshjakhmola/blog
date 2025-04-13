@@ -39,6 +39,9 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const loggedInUser = user?.id ?? "";
 
+  console.log("aaaaaaaaaaaaaaaaa", blogDetails);
+  
+
   const formattedBlogDetails = {
     // ...blogDetails,
     id,
@@ -54,7 +57,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
   return (
-    <div className="pt-4">
+    <div className="py-4 pb-16">
       <div className="hidden">Blog Id is:</div>
       <Blog {...formattedBlogDetails} />
     </div>
