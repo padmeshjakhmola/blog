@@ -37,7 +37,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const signUrlImage = await signedUrl(getObjectParamsofImage);
 
-  const loggedInUser = user?.id ?? "";
+  const loggedInUser = user?.id ?? "";  
 
   const formattedBlogDetails = {
     // ...blogDetails,
@@ -54,7 +54,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
   return (
-    <div className="pt-4">
+    <div className="py-4 pb-16">
       <div className="hidden">Blog Id is:</div>
       <Blog {...formattedBlogDetails} />
     </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import StoreProvider from "./StoreProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -22,8 +23,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {process.env.NODE_ENV === "development" && (
+          <script
+            src="https://unpkg.com/react-scan/dist/auto.global.js"
+            async
+          />
+        )}
+      </head>
       <body className={`${poppins.variable} font-poppins antialiased`}>
-        {children}
+        <StoreProvider>{children}</StoreProvider>
         <Toaster richColors />
       </body>
     </html>

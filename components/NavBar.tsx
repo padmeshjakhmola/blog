@@ -8,8 +8,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 const NavBar = async () => {
   const user = await getCurrentUser();
 
-  // console.log("rrrrrrrrrrrrrrrrr", user);
-
   return (
     <div className="flex flex-row justify-between mx-10 mt-6 text-md">
       <Link href="/">
