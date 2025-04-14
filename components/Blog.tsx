@@ -48,12 +48,13 @@ const Blog = ({
 
         <p className="px-16 py-10">{blogDescription}</p>
       </div>
-      {authorId === loggedInUser && <BlogOptions id={id || ""} />}
+      {/* {authorId === loggedInUser && <BlogOptions id={id || ""} loggedInUser={loggedInUser} />} */}
+      <BlogOptions id={id || ""} loggedInUser={loggedInUser} authorId={authorId} />
 
       <div className="border-1 mx-32 mb-10" />
 
       <div className="px-16">
-        <Comments />
+        <Comments id={id || ""} />
       </div>
     </div>
   );

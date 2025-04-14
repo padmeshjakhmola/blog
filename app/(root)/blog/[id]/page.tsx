@@ -37,10 +37,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const signUrlImage = await signedUrl(getObjectParamsofImage);
 
-  const loggedInUser = user?.id ?? "";
-
-  console.log("aaaaaaaaaaaaaaaaa", blogDetails);
-  
+  const loggedInUser = user?.id ?? "";  
 
   const formattedBlogDetails = {
     // ...blogDetails,

@@ -14,14 +14,27 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+import { useAppDispatch } from "@/lib/hooks";
+import { setComments } from "@/lib/commentSlice";
 
-const BlogOptions = ({ id }: { id: string }) => {
+const BlogOptions = ({
+  id,
+  loggedInUser,
+  authorId,
+}: {
+  id: string;
+  loggedInUser: string;
+  authorId: string;
+}) => {
+
   const router = useRouter();
+  const dispatch = useAppDispatch();
+
   const [openDialog, setOpenDialog] = useState<"comment" | "delete" | null>(
     null
   );
   const [showInput, setShowInput] = useState(false);
+  const [commentText, setCommentText] = useState("");
 
   const handleDelete = async () => {
     try {
@@ -47,8 +60,30 @@ const BlogOptions = ({ id }: { id: string }) => {
     }
   };
 
-  const handleComment = () => {
-    console.log("Comment Triggered");
+  const handleComment = async () => {
+    const allvalues = {
+      blogId: id,
+      loggedInUser,
+      commentText,
+    };
+
+    try {
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(allvalues),
+      });
+      const data = await response.json();
+      // console.log("Response from API:", data.values);
+      dispatch(setComments([data.values])); // store data in redux
+    } catch (error) {
+      console.error("Error:...", error);
+    }
+
+    setCommentText("");
+    setShowInput(false);
   };
 
   const icons = [
@@ -64,110 +99,121 @@ const BlogOptions = ({ id }: { id: string }) => {
 
   return (
     <>
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center space-x-2 text-white bg-white shadow-top-bottom p-4 border rounded-full hover:shadow-red-500/50 hover:shadow-lg">
-        {/* Comment button */}
-        {/* {!showInput && ( */}
-        <Button
-          variant="ghost"
-          className="bg-transparent hover:bg-transparent cursor-pointer"
-          onClick={() => setShowInput((prev) => !prev)}
-        >
-          <Image
-            src="/assets/icons/comment.svg"
-            alt="comment"
-            width={30}
-            height={30}
-            className="object-fill"
-          />
-        </Button>
+      {loggedInUser && (
+        <>
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center space-x-2 text-white bg-white shadow-top-bottom p-4 border rounded-full hover:shadow-red-500/50 hover:shadow-lg">
+            {/* Comment button */}
+            {/* {!showInput && ( */}
 
-        <AnimatePresence>
-          {showInput && (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 400, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden mr-2 text-black"
-            >
-              <div className="flex flex-row items-center justify-center gap-4">
-                <Input
-                  type="text"
-                  placeholder="Enter your comment"
-                  className="transition-all duration-300 p-5 rounded-3xl shadow-none shad-no-focus"
-                />
-                <Link
-                  className="p-2 rounded-full bg-brand-dark hover:bg-brand-dark/80 cursor-pointer"
-                  href="#"
-                >
-                  <Image
-                    src="/assets/icons/send.svg"
-                    alt="send"
-                    width={30}
-                    height={30}
-                    className="object-fill filter invert"
-                  />
-                </Link>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {!showInput &&
-          icons.map(({ type, iconPath }) => (
             <Button
-              key={type}
               variant="ghost"
               className="bg-transparent hover:bg-transparent cursor-pointer"
-              onClick={() => setOpenDialog(type as "comment" | "delete")}
+              onClick={() => setShowInput((prev) => !prev)}
             >
               <Image
-                src={iconPath}
-                alt={type}
+                src="/assets/icons/comment.svg"
+                alt="comment"
                 width={30}
                 height={30}
                 className="object-fill"
               />
             </Button>
-          ))}
-      </div>
 
-      <AlertDialog open={!!openDialog} onOpenChange={() => setOpenDialog(null)}>
-        {openDialog && (
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                {openDialog === "delete"
-                  ? "Are you absolutely sure?"
-                  : "Comment on this post"}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                {openDialog === "delete"
-                  ? "This action cannot be undone. This will permanently delete your blog from our servers."
-                  : "You can leave your feedback or comment on this blog post."}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              {openDialog === "delete" ? (
-                <AlertDialogAction
-                  className="bg-red-400 hover:bg-red-300 cursor-pointer"
-                  onClick={handleDelete}
+            <AnimatePresence>
+              {showInput && (
+                <motion.div
+                  initial={{ width: 0, opacity: 0 }}
+                  animate={{ width: 400, opacity: 1 }}
+                  exit={{ width: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden mr-2 text-black"
                 >
-                  Delete
-                </AlertDialogAction>
-              ) : (
-                <AlertDialogAction
-                  className="bg-blue-400 hover:bg-blue-300 cursor-pointer"
-                  onClick={handleComment}
-                >
-                  Comment
-                </AlertDialogAction>
+                  <div className="flex flex-row items-center justify-center gap-4">
+                    <Input
+                      type="text"
+                      placeholder="Enter your comment"
+                      className="transition-all duration-300 p-5 rounded-3xl shadow-none shad-no-focus"
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                    />
+                    <div
+                      className="p-2 rounded-full bg-brand-dark hover:bg-brand-dark/80 cursor-pointer"
+                      // href="#"
+                      onClick={handleComment}
+                    >
+                      <Image
+                        src="/assets/icons/send.svg"
+                        alt="send"
+                        width={30}
+                        height={30}
+                        className="object-fill filter invert"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
               )}
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        )}
-      </AlertDialog>
+            </AnimatePresence>
+            {!showInput &&
+              loggedInUser === authorId &&
+              icons.map(({ type, iconPath }) => (
+                <Button
+                  key={type}
+                  variant="ghost"
+                  className="bg-transparent hover:bg-transparent cursor-pointer"
+                  onClick={() => setOpenDialog(type as "comment" | "delete")}
+                >
+                  <Image
+                    src={iconPath}
+                    alt={type}
+                    width={30}
+                    height={30}
+                    className="object-fill"
+                  />
+                </Button>
+              ))}
+          </div>
+
+          <AlertDialog
+            open={!!openDialog}
+            onOpenChange={() => setOpenDialog(null)}
+          >
+            {openDialog && (
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {openDialog === "delete"
+                      ? "Are you absolutely sure?"
+                      : "Comment on this post"}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {openDialog === "delete"
+                      ? "This action cannot be undone. This will permanently delete your blog from our servers."
+                      : "You can leave your feedback or comment on this blog post."}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  {openDialog === "delete" ? (
+                    <AlertDialogAction
+                      className="bg-red-400 hover:bg-red-300 cursor-pointer"
+                      onClick={handleDelete}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  ) : (
+                    <AlertDialogAction
+                      className="bg-blue-400 hover:bg-blue-300 cursor-pointer"
+                      // onClick={handleComment}
+                    >
+                      Comment
+                    </AlertDialogAction>
+                  )}
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            )}
+          </AlertDialog>
+        </>
+      )}
     </>
   );
 };
